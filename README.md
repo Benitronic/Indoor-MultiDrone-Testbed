@@ -72,3 +72,12 @@ JavaScript syntax checked with `node --check`; local asset references checked; m
 ## Media rights
 
 User-provided media and manuscript figures remain attributable to their respective rights holders. No blanket source-code or media license is asserted by this project page.
+
+
+## Author-supplied visual update, 18 November 2026
+
+Seven photographs and 25 MATLAB GIFs have been added. `media.js` is the shared registry for gallery cards, experiment details, and recorded-session replay links. `media-manifest.json` retains descriptive metadata, original filenames, sizes, frame counts, and playback durations. Every supplied GIF is preserved byte-for-byte. WebP posters are extracted still previews.
+
+GIFs are never requested by the initial page load: the visitor opens an animation and then selects Play GIF. Stop returns to the still preview; Restart starts the GIF again. Each animation can be downloaded at original resolution. Comparison reveals and viewpoint rotations are distinguished from accelerated recorded-session playback.
+
+Mappings: G01 → marker screening; G02/G07–G09 → static diagnostics; G03–G06 → flight volume; G10 → calibration; G11–G12 → radio; G13–G14 → integrated timing; G15 (four maneuvers), G16, G17, G22 → individual flights/endurance; G18–G21 → six-drone circle R01. Aggregate tracking statistics remain separate from the session shown in each GIF. No GIF was generated from interpolated or invented raw data by this website update.

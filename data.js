@@ -15,5 +15,6 @@ window.ARENA = {
  single:[['Hover',1.621,.151],['Steps',4.155,.084],['Waypoints',3.072,.065],['Circle',7.262,.108]],
  multi:{Hover:[[1.697,.180,1.552],[2.113,.037,1.345],[2.285,.087,.638]],Steps:[[4.276,.094,1.563],[4.379,.054,1.351],[4.533,.054,.645]],Waypoints:[[3.033,.097,1.551],[3.238,.010,1.363],[3.444,.165,.627]],Circle:[[7.322,.114,1.549],[7.132,.103,1.355],[7.335,.100,.643]]},
  // Key examples: 'Circle-6': {src:'assets/circle-6.mp4', session:'R01',caption:'...'}
- flightVideos:{'Hover-1':{src:'assets/hover-1.mp4',poster:'assets/hover-1-poster.webp',caption:'One-drone hover demonstration.'}}
+ flightVideos:{'Hover-1':{src:'assets/hover-1.mp4',poster:'assets/hover-1-poster.webp',caption:'One-drone hover demonstration.'},'Steps-1':{src:'assets/steps-1.mp4',poster:'assets/steps-1-poster.webp',caption:'One-drone step-response demonstration.'}}
 };
+

@@ -75,7 +75,7 @@ function renderFlight(){
  $('#flightAnimations').innerHTML=flightGifs.length?`<div class="flight-animation-heading"><h3>Replay the recorded session</h3><p>Animations show repetition R01. The metrics above summarize three ${single?'flights':'sessions'}.</p></div><div class="animation-grid flight-gif-grid">${flightGifs.map(gifCard).join('')}</div>`:'<p class="source-note">No condition-specific animation has been supplied for this selection. The chart above remains the reported comparison across all tested group sizes.</p>';
 
  const clip=window.ARENA.flightVideos[`${maneuver}-${n}`];
- if(clip){$('#flightVisual').innerHTML=`<video controls playsinline preload="metadata" src="${esc(clip.src)}"></video>`;$('#flightCaption').textContent=`${clip.caption} Session: ${clip.session}. Metrics shown summarize all three repetitions.`;}
+ if(clip){$('#flightVisual').innerHTML=`<video controls playsinline preload="metadata" poster="${esc(clip.poster||'')}" aria-label="${esc(maneuver)} demonstration with ${n} ${single?'drone':'drones'}" src="${esc(clip.src)}"></video>`;$('#flightCaption').textContent=`${clip.caption}${clip.session?` Session: ${clip.session}.`:' Session/repetition not specified.'} Metrics shown summarize all three repetitions.`;if(single)$('#aggregation').textContent='The RMSE is summarized across three flights. The video illustrates the selected maneuver; these aggregate metrics are not assigned to this individual recording.';}
  else{
  const values=[window.ARENA.single.find(x=>x[0]===maneuver).slice(1),...window.ARENA.multi[maneuver]];
  const sizes=[1,2,3,6], max=Math.max(...values.map(d=>d[0]+d[1]))*1.22;

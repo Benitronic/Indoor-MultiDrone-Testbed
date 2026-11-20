@@ -61,6 +61,7 @@ function openExperiment(id){
 function route(){const hash=location.hash;if(hash.startsWith('#experiment='))openExperiment(decodeURIComponent(hash.slice(12)));else if(expDialog.open)expDialog.close();}
 function closeExperiment(){expDialog.close();if(location.hash.startsWith('#experiment='))history.replaceState(null,'','#experiments');priorFocus?.focus();}
 function openImage(src,caption){$('#largeImage').src=src;$('#largeImage').alt=caption;$('#largeCaption').textContent=caption;imageDialog.showModal();}
+const flightViews = new Map();
 function renderFlight(){
  const maneuver=$('#maneuver').value,n=Number($('#fleet').value),single=n===1,index=[2,3,6].indexOf(n);
  const datum=single?window.ARENA.single.find(x=>x[0]===maneuver).slice(1):window.ARENA.multi[maneuver][index];
@@ -75,7 +76,12 @@ function renderFlight(){
  $('#flightAnimations').innerHTML=flightGifs.length?`<div class="flight-animation-heading"><h3>Replay the recorded session</h3><p>Animations show repetition R01. The metrics above summarize three ${single?'flights':'sessions'}.</p></div><div class="animation-grid flight-gif-grid">${flightGifs.map(gifCard).join('')}</div>`:'<p class="source-note">No condition-specific animation has been supplied for this selection. The chart above remains the reported comparison across all tested group sizes.</p>';
 
  const clip=window.ARENA.flightVideos[`${maneuver}-${n}`];
- if(clip){$('#flightVisual').innerHTML=`<video controls playsinline preload="metadata" poster="${esc(clip.poster||'')}" aria-label="${esc(maneuver)} demonstration with ${n} ${single?'drone':'drones'}" src="${esc(clip.src)}"></video>`;$('#flightCaption').textContent=`${clip.caption}${clip.session?` Session: ${clip.session}.`:''} Metrics shown summarize all three repetitions.`;if(single)$('#aggregation').textContent='The RMSE is summarized across three flights. The video illustrates the selected maneuver; these aggregate metrics are not assigned to this individual recording.';}
+ if(clip){
+ const key=`${maneuver}-${n}`,views=clip.views||[clip],viewIndex=Math.min(flightViews.get(key)||0,views.length-1),view=views[viewIndex];
+ $('#flightVisual').innerHTML=(views.length>1?`<label class="camera-view-label">Camera view <select id="flightView" aria-label="Camera view">${views.map((v,i)=>`<option value="${i}" ${i===viewIndex?'selected':''}>${esc(v.label||`View ${i+1}`)}</option>`).join('')}</select></label>`:'')+`<video controls playsinline preload="metadata" poster="${esc(view.poster||'')}" aria-label="${esc(maneuver)} demonstration with ${n} ${single?'drone':'drones'}${views.length>1?`, ${esc(view.label)}`:''}" src="${esc(view.src)}"></video>`;
+ $('#flightCaption').textContent=`${view.caption||clip.caption}${clip.session?` Session: ${clip.session}.`:''} Metrics shown summarize all three repetitions.`;
+ if(single)$('#aggregation').textContent='The RMSE is summarized across three flights. The video illustrates the selected maneuver; these aggregate metrics are not assigned to this individual recording.';
+ }
  else{
  const values=[window.ARENA.single.find(x=>x[0]===maneuver).slice(1),...window.ARENA.multi[maneuver]];
  const sizes=[1,2,3,6], max=Math.max(...values.map(d=>d[0]+d[1]))*1.22;
@@ -109,4 +115,7 @@ hero.addEventListener('pause',videoLabel);hero.addEventListener('play',videoLabe
 if(matchMedia('(prefers-reduced-motion: reduce)').matches){hero.autoplay=false;hero.pause();}hero.addEventListener('error',()=>{toggle.textContent='Video unavailable';});
 $('#copyBibtex').addEventListener('click',async()=>{try{await navigator.clipboard.writeText($('#bibtex').textContent);$('#copyStatus').textContent='Citation copied.';}catch{$('#copyStatus').textContent='Select and copy the citation above.';}});
 window.addEventListener('hashchange',route);route();
+
+
+document.querySelector('#flightVisual').addEventListener('change',event=>{if(event.target.id==='flightView'){flightViews.set(`${$('#maneuver').value}-${Number($('#fleet').value)}`,Number(event.target.value));renderFlight();}});
 

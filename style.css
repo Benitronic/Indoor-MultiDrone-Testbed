@@ -27,3 +27,7 @@
   object-fit: contain;
   margin: 0 auto;
 }
+/* Mostra a parte superior apenas da foto da vareta */
+#photoGrid .photo-card .image-expand img[src="assets/photo-calibration-wand.webp"] {
+  object-position: center top;
+}
